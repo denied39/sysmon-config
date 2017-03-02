@@ -5,10 +5,10 @@
   Master project:	https://github.com/SwiftOnSecurity/sysmon-config
   Master license:	Creative Commons Attribution 4.0 | You may privatize, fork, edit, teach, publish, or deploy for commercial use - with attribution in the text.
 
-  Fork version:	<N/A>
-  Fork author:	<N/A>
-  Fork project:	<N/A>
-  Fork license:	<N/A>
+  Fork version:	1
+  Fork author:	Michael Boyd
+  Fork project:	https://github.com/denied39/sysmon-config
+  Fork license:	Creative Commons Attribution 4.0 | You may privatize, fork, edit, teach, publish, or deploy for commercial use - with attribution in the text.
 
   REQUIRED: Sysmon version 6.00 or higher (due to changes in registry syntax)
 	https://technet.microsoft.com/en-us/sysinternals/bb545021.aspx
@@ -53,12 +53,34 @@
 			<Image condition="end with">C:\Windows\System32\CompatTelRunner.exe</Image> <!--Microsoft:Windows:Customer Experience Improvement-->
 			<Image condition="is">C:\Windows\System32\wermgr.exe</Image> <!--Microsoft:Windows: Error reporting/telemetry-->
 			<Image condition="is">C:\Windows\SysWOW64\wermgr.exe</Image> <!--Microsoft:Windows: Error reporting/telemetry-->
+			<CommandLine condition="is">C:\Windows\system32\SearchIndexer.exe /Embedding</CommandLine><!--Microsoft:Windows: Search Indexer-->
+			<CommandLine condition="is">C:\Windows\System32\svchost.exe -k wsappx</CommandLine><!--Microsoft:Windows 10-->
+			<CommandLine condition="is">C:\Windows\System32\svchost.exe -k appmodel</CommandLine><!--Microsoft:Windows 10-->
+			<CommandLine condition="is">C:\Windows\System32\svchost.exe -k UnistackSvcGroup</CommandLine><!--Microsoft:Windows 10-->
+			<CommandLine condition="is">C:\Windows\System32\svchost.exe -k defragsvc</CommandLine><!--Microsoft:Windows Defrag-->
+			<CommandLine condition="is">C:\Windows\System32\svchost.exe -k RPCSS</CommandLine><!--Microsoft:Windows Services-->
+			<CommandLine condition="is">C:\Windows\System32\svchost.exe -k utcsvc</CommandLine><!--Microsoft:Windows Services-->
+			<CommandLine condition="is">C:\Windows\System32\svchost.exe -k wbioSvcGroup</CommandLine><!--Microsoft:Windows Services-->
+			<CommandLine condition="is">C:\Windows\System32\svchost.exe -k DcomLaunch</CommandLine><!--Microsoft:Windows Services-->
+			<CommandLine condition="is">C:\Windows\System32\svchost.exe -k swprv</CommandLine><!--Microsoft:Software Shadow Copy Provider-->
+			<CommandLine condition="is">C:\Windows\System32\svchost.exe -k imgsvc</CommandLine><!--Microsoft:The Windows Image Acquisition Service-->
+			<CommandLine condition="is">C:\Windows\System32\svchost.exe -k NetworkServiceNetworkRestricted</CommandLine><!--Microsoft:Windows Network Services-->
+			<CommandLine condition="is">C:\Windows\System32\svchost.exe -k LocalServiceNetworkRestricted</CommandLine><!--Microsoft:Windows Network Services-->
+			<CommandLine condition="is">C:\Windows\System32\svchost.exe -k LocalSystemNetworkRestricted</CommandLine><!--Microsoft:Windows Network Services-->
+			<CommandLine condition="is">C:\Windows\System32\svchost.exe -k LocalServiceAndNoImpersonation</CommandLine><!--Microsoft:Windows Network Services-->
+			<CommandLine condition="is">C:\Windows\system32\svchost.exe -k NetworkService</CommandLine><!--Microsoft:Windows Network Services-->
+			<CommandLine condition="is">C:\Windows\System32\svchost.exe -k netsvcs</CommandLine><!--Microsoft:Windows Network Services-->
+			<ParentCommandLine condition="is">C:\Windows\System32\svchost.exe -k netsvcs</ParentCommandLine><!--Microsoft:Windows Network Services: Spawns Consent.exe-->
+			<ParentCommandLine condition="is">C:\Windows\system32\svchost.exe -k LocalSystemNetworkRestricted</ParentCommandLine><!--Microsoft:Windows Network Services-->
+			<Image condition="is">C:\Windows\System32\powercfg.exe</Image><!--Microsoft:Power Management-->
 			<!--SECTION: Microsoft dotNet-->
 			<Image condition="is">C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorsvw.exe</Image> <!--Microsoft:DotNet-->
 			<ParentImage condition="is">C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorsvw.exe</ParentImage> <!--Microsoft:DotNet-->
 			<Image condition="is">C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe</Image> <!--Microsoft:DotNet-->
 			<ParentImage condition="is">C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe</ParentImage> <!--Microsoft:DotNet-->
 			<ParentImage condition="is">C:\Windows\Microsoft.NET\Framework\v4.0.30319\ngentask.exe</ParentImage> <!--Microsoft:DotNet: Spawns thousands of ngen.exe processes-->
+			<ParentImage condition="is">C:\Windows\Microsoft.NET\Framework64\v4.0.30319\ngentask.exe</ParentImage> <!--Microsoft:DotNet-->
+			<CommandLine condition="begin with">C:\Windows\Microsoft.NET\Framework\v4.0.30319\ngen.exe</CommandLine> <!--Microsoft:DotNet-->
 			<!--SECTION: Microsoft Office-->
 			<Image condition="is">C:\Program Files\Common Files\Microsoft Shared\ClickToRun\OfficeC2RClient.exe</Image> <!--Microsoft:Office: Background process-->
 			<ParentImage condition="is">C:\Program Files\Common Files\Microsoft Shared\ClickToRun\OfficeC2RClient.exe</ParentImage> <!--Microsoft:Office: Background process-->
@@ -108,8 +130,8 @@
 			<!--SECTION: Dropbox-->
 			<Image condition="end with">C:\Program Files (x86)\Dropbox\Update\DropboxUpdate.exe</Image> <!--Dropbox:Updater: Lots of command-line arguments-->
 			<ParentImage condition="end with">C:\Program Files (x86)\Dropbox\Update\DropboxUpdate.exe</ParentImage>
-			<!--SECTION: Dell-->
-			<!-- <ParentImage condition="image">C:\Program Files (x86)\Dell\CommandUpdate\InvColPC.exe</ParentImage> --> <!--Dell:CommandUpdate: Detection process-->
+			<!--SECTION: Symantec-->
+			<ParentImage condition="begin with">C:\Program Files (x86)\Symantec\Symantec Endpoint Protection\</ParentImage> <!--Symantec AV-->
 		</ProcessCreate>
 
 	<!--SYSMON EVENT ID 2 : FILE CREATION TIME RETROACTIVELY CHANGED IN THE FILESYSTEM -->
@@ -119,6 +141,8 @@
 		</FileCreateTime>
 		<FileCreateTime onmatch="exclude">
 			<Image condition="image">OneDrive.exe</Image> <!--OneDrive constantly changes file times-->
+			<Image condition="image">chrome.exe</Image> <!--Chrome constantly changes file times-->
+			<Image condition="image">C:\WINDOWS\system32\backgroundTaskHost.exe</Image> <!--Chrome constantly changes file times-->
 			<Image condition="contains">setup</Image> <!--Ignore setups-->
 		</FileCreateTime>
 
@@ -149,6 +173,7 @@
 			<Image condition="image">sc.exe</Image> <!--Microsoft:Windows: Remotely change Windows service settings from command line | Credit @ion-storm -->
 			<Image condition="image">qwinsta.exe</Image> <!--Microsoft:Windows: Remotely query login sessions on a server or workstation | Credit @ion-storm -->
 			<Image condition="image">java.exe</Image> <!--Java: Monitor usage of vulnerable application | Credit @ion-storm -->
+			<Image condition="contains">psexe</Image><!--Detect PSExec, PSexec services-->
 			<!--Suspicious ports-->
 			<DestinationPort condition="is">22</DestinationPort> <!--SSH protocol-->
 			<DestinationPort condition="is">23</DestinationPort> <!--Telnet protocol-->
@@ -157,6 +182,7 @@
 			<DestinationPort condition="is">5900</DestinationPort> <!--VNC protocol-->
 			<DestinationPort condition="is">9001</DestinationPort> <!--Tor protocol [ http://www.computerworlduk.com/tutorial/security/tor-enterprise-2016-blocking-malware-darknet-use-rogue-nodes-3633907/ ] -->
 			<DestinationPort condition="is">9030</DestinationPort> <!--Tor protocol [ http://www.computerworlduk.com/tutorial/security/tor-enterprise-2016-blocking-malware-darknet-use-rogue-nodes-3633907/ ] -->
+			<DestinationPort condition="is">53</DestinationPort> <!--Log DNS for threat discovery-->
 			</NetworkConnect>
 		<NetworkConnect onmatch="exclude">
 			<Image condition="image">Spotify.exe</Image> <!--Spotify-->
@@ -186,6 +212,7 @@
 			<Signature condition="contains">microsoft</Signature> <!--Exclude signed Microsoft drivers-->
 			<Signature condition="contains">windows</Signature> <!--Exclude signed Microsoft drivers-->
 			<Signature condition="begin with">Intel </Signature> <!--Exclude signed Intel drivers-->
+			<Signature condition="begin with">Symantec </Signature> <!--Exclude signed Symantec drivers-->
 		</DriverLoad>
 
 	<!--SYSMON EVENT ID 7 : DLL (IMAGE) LOADED BY PROCESS -->
