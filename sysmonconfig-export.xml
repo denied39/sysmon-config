@@ -480,6 +480,10 @@
 			<!--ADDITIONAL REFERENCE: [ https://www.cobaltstrike.com/help-smb-beacon ] -->
 			<!--ADDITIONAL REFERENCE: [ https://blog.cobaltstrike.com/2015/10/07/named-pipe-pivoting/ ] -->
 		</PipeEvent>
+	<!--SYSMON EVENT ID 19,20, & 21 : WmiEventFilter / WmiEventConsumer / WmiEventConsumerToFilter-->
+		<WmiEvent onmatch="exclude">
+			<!--Capture all events for the time being-->
+		</WmiEvent>
 
 	</EventFiltering>
 </Sysmon>
