@@ -5,7 +5,7 @@
   Master project:	https://github.com/SwiftOnSecurity/sysmon-config
   Master license:	Creative Commons Attribution 4.0 | You may privatize, fork, edit, teach, publish, or deploy for commercial use - with attribution in the text.
 
-  Fork version:	1
+  Fork version:	2
   Fork author:	Michael Boyd
   Fork project:	https://github.com/denied39/sysmon-config
   Fork license:	Creative Commons Attribution 4.0 | You may privatize, fork, edit, teach, publish, or deploy for commercial use - with attribution in the text.
@@ -29,7 +29,7 @@
 		"LoginGuid" is randomly generated, assigned, and tracked by Sysmon to assist in tracing individual user sessions.
 -->
 
-<Sysmon schemaversion="3.30">
+<Sysmon schemaversion="3.40">
 	<HashAlgorithms>md5,imphash</HashAlgorithms>
 	<EventFiltering>
 
